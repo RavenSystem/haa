@@ -1,2 +1,2 @@
-# haa
-HomeKit Accessory Architect
+# HAA
+Home Accessory Architect firmware binary releases
