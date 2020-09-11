@@ -30,20 +30,18 @@ files=($(curl -s "https://api.github.com/repos/RavenSystem/haa/releases/tags/3.1
 echo ""
 if [ -n "$1" ]; then
         version="$1"
-        folder="$version/"
         echo "Attempting to download the specified verion: $version"
         download_haa
 else
         version=$(curl -s "https://api.github.com/repos/RavenSystem/haa/releases/latest" | grep -Po '(?<="tag_name": ")[^"]*')
         echo "Attempting to download the latest version: $version"
-        folder="$version/"
         download_haa
         echo ""
         echo -n "Copying latest files to: "
         pwd
         echo "--------------------------------------------------------"
         echo ""
-        cp -v ./"$folder"* ./
+        cp -v ./"$version"/* ./
 fi
 echo ""
 echo "Complete, exiting"
