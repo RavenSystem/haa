@@ -26,7 +26,7 @@ download_haa(){
         fi
 }
 
-files=($(curl -s "https://api.github.com/repos/RavenSystem/haa/releases/tags/3.1.2" | grep -Po '(?<="browser_download_url": ")[^"]*'))
+files=($(curl -s "https://api.github.com/repos/RavenSystem/haa/releases/tags/$version" | grep -Po '(?<="browser_download_url": ")[^"]*'))
 echo ""
 if [ -n "$1" ]; then
         version="$1"
