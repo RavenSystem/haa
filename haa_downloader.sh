@@ -51,12 +51,15 @@ haa_downloader_config(){
 	echo "Setting up config for HAA Downloader"
 	PS3='Please choose: '
 	echo
-	wr_options=("/var/www/html (Apache, lighthttpd Default)" "Custom")
+	wr_options=("/var/www/html (Apache, lighthttpd Default)" "/usr/share/nginx/html (Nginx Default" "Custom")
 	select i in "${wr_options[@]}"
 	do
 		case "$i" in
 			"/var/www/html (Apache, lighthttpd Default)")
 				webroot="/var/www/html"
+				;;
+			"/usr/share/nginx/html (Nginx Default")
+				webroot="/usr/share/nginx/html"
 				;;
 			"Custom")
 				while [ ! -n "$webroot" ] || [ ! -d "$webroot" ]
