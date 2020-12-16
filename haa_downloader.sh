@@ -26,14 +26,14 @@ download_haa(){
 
 	if [ -z "$validation" ]
 	then
-		if [ ! -d "$webroot/haa/$version" ]; then
-			mkdir "$webroot/haa/$version"
+		if [ ! -d "$webroot/$repository/$version" ]; then
+			mkdir "$webroot/$repository/$version"
 		fi
 		for i in "${files[@]}"
 		do
 			file_name="$(basename $i)"
-			echo -n "Saving $webroot/haa/$version/$file_name ... "
-			curl -sLo "$webroot/haa/$version/$file_name" "$i"
+			echo -n "Saving $webroot/$repository/$version/$file_name ... "
+			curl -sLo "$webroot/$repository/$version/$file_name" "$i"
 			if [ "$?" -ne 0 ]
 			then
 				echo "Failed to retrieve, check connection or user permissions"
@@ -57,9 +57,21 @@ haa_downloader_config(){
 		case "$i" in
 			"/var/www/html (Apache, lighthttpd Default)")
 				webroot="/var/www/html"
+				if [ ! -d "$webroot" ]
+					then
+						echo "Folder doesn't exist, have you got this installed? Please try again..."
+						echo
+						continue
+					fi
 				;;
 			"/usr/share/nginx/html (Nginx Default")
 				webroot="/usr/share/nginx/html"
+				if [ ! -d "$webroot" ]
+					then
+						echo "Folder doesn't exist, have you got this installed? Please try again..."
+						echo
+						continue
+					fi
 				;;
 			"Custom")
 				while [ ! -n "$webroot" ] || [ ! -d "$webroot" ]
@@ -78,7 +90,7 @@ haa_downloader_config(){
 				;;
 		esac
 		echo '"web_root": "'"$webroot"'"' > haa_downloader.conf
-		echo "Setting HAA Folder to: $webroot/haa"
+		echo "Setting HAA Folder to: $webroot/$repository"
 		echo
 		break
 	done
@@ -112,6 +124,21 @@ haa_downloader_help(){
 	echo "	sudo ./haa_downloader.sh -v 3.3.3"
 	echo
 	echo
+	echo "Downloading a beta version"
+	echo "-------------------------------------------------------"
+	echo
+	echo "	To download the latest beta version execute the script with the beta flag -b"
+	echo "  'sudo ./haa_downloader.sh -b'"
+	echo
+	echo "	This can be used in conjunction with the verions flag -v in order to download a custom beta version"
+	echo "	'sudo ./haa_downloader.sh -bv <version>"
+	echo
+	echo "	Will download the requested beta version (ie 3.3.3) to <webroot>/haabeta/3.3.3/"
+	echo
+	echo "	Example"
+	echo "	sudo ./haa_downloader.sh -bv 3.3.3"
+	echo
+	echo
 	echo "HAA Downloader Setup / Running for the first time"
 	echo "--------------------------------------------------------"
 	echo
@@ -128,6 +155,7 @@ haa_downloader_help(){
 
 haa_downloader_usage(){
 	echo "sudo ./haa_downloader.sh		<---Download Latest Version"
+	echo "sudo ./haa_downloader.sh -b		<---Download the Latest Beta Version"
 	echo "sudo ./haa_downloader.sh -v <version>	<---Download Specific Version"
 	echo "sudo ./haa_downloader.sh -s		<---Run Setup Mode"
 	echo "sudo ./haa_downloader.sh -h		<---Help"
@@ -146,7 +174,7 @@ echo
 owner="RavenSystem"
 repository="haa"
 script_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-while getopts ":hsv:" arg
+while getopts ":hsbv:" arg
 do
 	case "${arg}" in
 		h)
@@ -155,6 +183,9 @@ do
 			;;
 		s)
 			haa_downloader_config
+			;;
+		b)
+			repository="haabeta"
 			;;
 		v)
 			version="$OPTARG"
@@ -178,6 +209,13 @@ if [ -z "$webroot" ]
 then
 	haa_downloader_config
 fi
+echo "check if repos exists?"
+if [ ! -d "$webroot"/"$repository" ]
+then
+	echo "didn't exist"
+	mkdir "$webroot/$repository"
+fi
+echo "done"
 if [ -n "$version" ]
 then
 	echo "Attempting to download the specified verion: $version"
@@ -191,7 +229,7 @@ else
 	pwd
 	echo "--------------------------------------------------------"
 	echo
-	cp -v "$webroot"/haa/"$version"/* "$webroot"/haa/
+	cp -v "$webroot"/"repository"/"$version"/* "$webroot"/"repository"/
 fi
 echo
 rate_limit=$(curl -s "https://api.github.com/rate_limit" | grep -Pom 1 '(?<="limit": )[^,}]*')
