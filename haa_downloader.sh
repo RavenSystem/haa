@@ -229,7 +229,7 @@ else
 	pwd
 	echo "--------------------------------------------------------"
 	echo
-	cp -v "$webroot"/"repository"/"$version"/* "$webroot"/"repository"/
+	cp -v "$webroot"/"$repository"/"$version"/* "$webroot"/"$repository"/
 fi
 echo
 rate_limit=$(curl -s "https://api.github.com/rate_limit" | grep -Pom 1 '(?<="limit": )[^,}]*')
