@@ -11,3 +11,5 @@ It is possible to update using OTA from v2.0.0. However, if current version is b
 - HTTPS: Unchecked
 
 When device is updated to v6.0.7, remove `/migrate_old` part from Server and update again.
+
+[ [GitHub Page Source](https://github.com/RavenSystem/haa/tree/master/docs) ]
