@@ -1,5 +1,5 @@
 # OTA update test server without HTTPS
-Useful to OTA update devices with very old firmware, from v2.5.3.
+Useful to perform very fast OTA updates; or update devices with very old firmware, from v2.5.3.
 - Server: haa.ravensystem.es
 - Port: 80
 - HTTPS: Unchecked
