@@ -5,7 +5,7 @@ Useful to perform very fast OTA updates; or update devices with very old firmwar
 - HTTPS: Unchecked
 
 ## Update from very old versions
-It is possible to update using OTA from v2.0.0. However, if curretn version is between v2.0.0 and v2.5.2, an intermediate step is needed:
+It is possible to update using OTA from v2.0.0. However, if current version is between v2.0.0 and v2.5.2, an intermediate step is needed:
 - Server: haa.ravensystem.es/migrate_old
 - Port: 80
 - HTTPS: Unchecked
